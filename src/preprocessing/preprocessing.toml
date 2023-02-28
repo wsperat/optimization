@@ -1,5 +1,0 @@
-[origin]
-feature_store = false
-
-[target]
-target_name = "my_target"

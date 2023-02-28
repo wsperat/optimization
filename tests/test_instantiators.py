@@ -1,13 +1,13 @@
-from unittest import TestCase
-from unittest.mock import Mock, MagicMock
-from typing import Dict
+import os
+import sys
+sys.path.append(os.getcwd())
 
-from optuna import Trial
+from unittest import TestCase
+from unittest.mock import MagicMock
+
 from src.instantiate.instantiators import (
     AbstractInstanceCreator,
     InstanceCreator,
-    Parameter,
-    ParameterSpace,
 )
 
 
