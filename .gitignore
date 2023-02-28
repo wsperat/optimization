@@ -1,5 +1,8 @@
 .vscode/
-data/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 .ssh/
 
 /artifacts/other/*
