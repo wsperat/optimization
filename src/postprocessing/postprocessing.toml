@@ -1,0 +1,11 @@
+[dataset_input]
+column_names = ["col_1", "col_2", "col_3"]
+
+[matrix_output]
+vector_dim = 10
+is_sparse = true
+
+[anovos_conf]
+
+[featuretools_conf]
+
