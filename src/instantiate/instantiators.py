@@ -62,8 +62,10 @@ class InstanceCreator(AbstractInstanceCreator):
 
     def __call__(self, trial: Trial, *args: Any, **kwargs: Any) -> Any:
         params = {
-            name: value for parameter_name, parameter_value in [
-                self._get_parameter_values(trial, parameter_name, parameter_space) for parameter_name, parameter_space in self.space.items()
+            name: value
+            for name, value in [
+                self._get_parameter_values(trial, parameter_name, parameter_space)
+                for parameter_name, parameter_space in self.space.items()
             ]
         }
 
