@@ -1,5 +1,6 @@
 .vscode/
 .ssh/
+.hypothesis/
 
 /artifacts/other/*
 !/artifacts/other/.gitkeep
