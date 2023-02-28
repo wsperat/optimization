@@ -24,7 +24,7 @@ class InstanceCreator(AbstractInstanceCreator):
         self.object_type = object_type
         return
     
-    def _get_parameter_values(self, parameter_space) -> Parameter:
+    def _get_parameter_values(self, parameter_space : Dict[str, Any]) -> Parameter:
         return
 
     def __call__(self, trial: Trial, *args: Any, **kwargs: Any) -> Any:
