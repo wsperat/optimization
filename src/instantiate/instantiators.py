@@ -1,10 +1,12 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Tuple, Union, TypeVar, Sequence
 from optuna import Trial
 from lightgbm import LGBMModel, LGBMClassifier, LGBMRegressor, LGBMRanker
-from xgboost import XGBModel
+from xgboost import XGBModel, XGBClassifier, XGBRegressor, XGBRanker
 
-Parameter = Union[int, float, str]
+Parameter = Union[int, float, bool, str, Sequence[Any]]
+ParameterSpace = Dict[str, Parameter]
+T = TypeVar("T")
 
 
 class AbstractInstanceCreator(ABCMeta):
@@ -12,23 +14,23 @@ class AbstractInstanceCreator(ABCMeta):
         pass
 
     @abstractmethod
-    def _get_parameter_values(self) -> Dict[str, Any]:
+    def _get_parameter_values(self) -> Tuple[str, Parameter]:
         pass
 
     @abstractmethod
-    def __call__(self, trial: Trial, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self, trial: Trial) -> Any:
         pass
 
 
 class InstanceCreator(AbstractInstanceCreator):
-    def __init__(self, space: Dict[str, Dict[str, Any]], object_type: type):
+    def __init__(self, space: Dict[str, ParameterSpace], object_type: type):
         self.space = space
         self.object_type = object_type
         return
 
     def _get_parameter_values(
-        self, trial: Trial, parameter_name: str, parameter_space: Dict[str, Any]
-    ) -> Parameter:
+        self, trial: Trial, parameter_name: str, parameter_space: ParameterSpace
+    ) -> Tuple[str, Parameter]:
         if "distribution" in parameter_space.keys():
             is_categorical = False
         elif len(parameter_space.keys()) == 1:
@@ -60,7 +62,7 @@ class InstanceCreator(AbstractInstanceCreator):
                     log=parameter_space.get("log", False),
                 )
 
-    def __call__(self, trial: Trial, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self, trial: Trial) -> T:
         params = {
             name: value
             for name, value in [
