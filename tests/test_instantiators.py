@@ -30,6 +30,7 @@ class TestInstanceCreator(TestCase):
         self.space = {
             "a": {"distribution": "int", "min": 1, "max": 10},
             "b": {"distribution": "float", "min": 0.0, "max": 1.0},
+            "c": {"foo", "bar", "baz"}
         }
         self.obj_type = MagicMock()
         self.instance_creator = InstanceCreator(self.space, self.obj_type)
@@ -38,8 +39,8 @@ class TestInstanceCreator(TestCase):
         # Test categorical parameter value retrieval.
         trial = MagicMock()
         trial.suggest_categorical.return_value = "foo"
-        parameter_name = "a"
-        parameter_space = {"foo", "bar", "baz"}
+        parameter_name = "c"
+        parameter_space = self.space[parameter_name]
         result = self.instance_creator._get_parameter_values(
             trial, parameter_name, parameter_space
         )
@@ -53,7 +54,7 @@ class TestInstanceCreator(TestCase):
         trial = MagicMock()
         trial.suggest_int.return_value = 5
         parameter_name = "a"
-        parameter_space = {"distribution": "int", "min": 1, "max": 10}
+        parameter_space = self.space[parameter_name]
         result = self.instance_creator._get_parameter_values(
             trial, parameter_name, parameter_space
         )
@@ -67,7 +68,7 @@ class TestInstanceCreator(TestCase):
         trial = MagicMock()
         trial.suggest_float.return_value = 0.5
         parameter_name = "b"
-        parameter_space = {"distribution": "float", "min": 0.0, "max": 1.0}
+        parameter_space = self.space[parameter_name]
         result = self.instance_creator._get_parameter_values(
             trial, parameter_name, parameter_space
         )
